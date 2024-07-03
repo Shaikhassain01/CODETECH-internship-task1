@@ -1,0 +1,62 @@
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    published_year YEAR,
+    genre VARCHAR(100),
+    quantity INT DEFAULT 0
+);
+
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(15),
+    membership_date DATE NOT NULL
+);
+
+CREATE TABLE Transactions (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    book_id INT,
+    member_id INT,
+    borrow_date DATE NOT NULL,
+    return_date DATE,
+    status VARCHAR(20) NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
+);
+INSERT INTO Books (title, author, published_year, genre, quantity)
+VALUES ('To Kill a Mockingbird', 'Harper Lee', 1960, 'Fiction', 10);
+
+INSERT INTO Books (title, author, published_year, genre, quantity)
+VALUES ('1984', 'George Orwell', 1949, 'Dystopian', 5);
+INSERT INTO Members (first_name, last_name, email, phone, membership_date)
+VALUES ('John', 'Doe', 'john.doe@example.com', '123-456-7890', '2024-01-01');
+
+INSERT INTO Members (first_name, last_name, email, phone, membership_date)
+VALUES ('Jane', 'Smith', 'jane.smith@example.com', '098-765-4321', '2024-02-15');
+INSERT INTO Transactions (book_id, member_id, borrow_date, status)
+VALUES (1, 1, '2024-07-01', 'borrowed');
+
+INSERT INTO Transactions (book_id, member_id, borrow_date, return_date, status)
+VALUES (2, 2, '2024-07-02', '2024-07-10', 'returned');
+UPDATE Books
+SET quantity = quantity - 1
+WHERE book_id = 1;
+UPDATE Members
+SET email = 'new.email@example.com'
+WHERE member_id = 1;
+DELETE FROM Books
+WHERE book_id = 2;
+DELETE FROM Members
+WHERE member_id = 2;
+SELECT * FROM Books;
+SELECT * FROM Members;
+SELECT * FROM Transactions;
+SELECT * FROM Books
+WHERE genre = 'Fiction';
+SELECT * FROM Members
+WHERE membership_date > '2024-01-01';
+SELECT * FROM Transactions
+WHERE status = 'borrowed';
